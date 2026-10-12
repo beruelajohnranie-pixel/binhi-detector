@@ -1,0 +1,12 @@
+BINHISCAN - SITAW MISCLASSIFICATION GUARD
+
+Changes applied:
+- Uses a more conservative image-analysis prompt.
+- Tells the analyzer to reject unsupported, unclear, blurry, or non-seed photos instead of forcing one of the eight classes.
+- Adds a 78% minimum self-reported confidence threshold; lower-confidence results are rejected and ask for a clearer photo.
+- Adds explicit guidance not to choose Sitaw from brown/oval appearance alone.
+
+Important limitations:
+- The confidence value comes from the image-analysis service response; it is not a calibrated probability.
+- This ZIP's current app.js uses the host-provided Claude image-analysis integration, not model.tflite.
+- These guards can reduce forced guesses but cannot guarantee correct seed identification. For real classifier accuracy, test against labeled photos and retrain/fix the model if needed.

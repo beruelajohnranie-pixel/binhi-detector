@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BinhiScan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f2e8;--card:rgba(255,253,248,.9);--ink:#1d2b21;--mut:#78846f;--line:#e5dfcf;--pri:#2f5d3f;--pri2:#e6efdd;--acc:#d9825b;--ok:#3f8a57;--wn:#cf9a2e;--no:#c8553d;--hero:linear-gradient(145deg,#2f6a46,#1c3f2c 75%);--sh:0 10px 28px -14px rgba(47,93,63,.35);--serif:'Fraunces',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1812;--card:rgba(24,38,30,.92);--ink:#ecf2e6;--mut:#92a58f;--line:#27382c;--pri:#8fcf9f;--pri2:#1d3326;--acc:#f0a07a;--sh:0 10px 28px -14px #000}}
+:root[data-theme="dark"]{--bg:#0e1812;--card:rgba(24,38,30,.92);--ink:#ecf2e6;--mut:#92a58f;--line:#27382c;--pri:#8fcf9f;--pri2:#1d3326;--acc:#f0a07a;--sh:0 10px 28px -14px #000}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);overflow-x:hidden}
+.bg{position:fixed;inset:0;z-index:-1}.bg i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.6}
+.bg i:first-child{width:340px;height:340px;background:#cfe0c3;top:-80px;left:-90px}.bg i:last-child{width:300px;height:300px;background:#f6d9c6;top:340px;right:-110px}
+:root[data-theme="dark"] .bg i,:root:not([data-theme="light"]) .bg i{opacity:.18}
+.ic{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.app{max-width:640px;margin:0 auto;padding:14px 16px 130px}
+.hd{display:flex;align-items:center;gap:12px;background:var(--hero);color:#fff;border-radius:26px;padding:16px 16px;margin-bottom:16px;box-shadow:0 18px 36px -18px rgba(28,63,44,.7);position:relative;overflow:hidden}
+.hd:after{content:"";position:absolute;right:-50px;top:-70px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.07)}
+.lg{flex:none;width:46px;height:46px;border-radius:15px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);display:grid;place-items:center;font-size:24px}
+.hd b{font:700 23px/1.1 var(--serif);display:block}.hd small{opacity:.8;font-size:11px;line-height:1.3;display:block;margin-top:2px}
+.ib{margin-left:auto;flex:none;width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;display:grid;place-items:center;cursor:pointer;z-index:1}
+.pg{display:none}.pg.on{display:block;animation:up .35s both}
+@keyframes up{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:20px;margin-bottom:14px;box-shadow:var(--sh)}
+h2{font:700 21px/1.2 var(--serif);margin:0 0 6px}h2 small{font:500 13px var(--sans);color:var(--mut)}
+p{margin:0 0 14px;color:var(--mut)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:16px;padding:15px;font:700 15px var(--sans);cursor:pointer;background:var(--hero);color:#fff;box-shadow:var(--sh);margin-bottom:10px}
+.btn.g{background:var(--pri2);color:var(--pri);box-shadow:none;border:1px solid var(--line)}.btn.r{background:#fbe7e2;color:var(--no);box-shadow:none}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.two .btn{margin:0}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}.stats .card{margin:0;padding:16px}.stats b{font:700 30px var(--serif);color:var(--pri);display:block}.stats span{color:var(--mut);font-size:13px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip{border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:9px 14px;border-radius:99px;font:500 14px var(--sans);cursor:pointer}
+label.l{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);margin:14px 0 6px}
+select{width:100%;padding:13px 14px;border-radius:14px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+input[type=range]{width:100%;accent-color:var(--pri)}
+.note{font-size:13px;color:var(--mut)}
+.vf{aspect-ratio:1.25;border-radius:24px;background:var(--hero);position:relative;display:grid;place-items:center;margin-bottom:14px;overflow:hidden;cursor:pointer}
+.vf>span{font-size:70px;filter:drop-shadow(0 10px 12px rgba(0,0,0,.35))}
+.vf b{position:absolute;width:38px;height:38px;border:4px solid #fff;border-radius:14px;opacity:.9}
+.vf b:nth-child(1){top:22px;left:22px;border-right:0;border-bottom:0}.vf b:nth-child(2){top:22px;right:22px;border-left:0;border-bottom:0}.vf b:nth-child(3){bottom:22px;left:22px;border-right:0;border-top:0}.vf b:nth-child(4){bottom:22px;right:22px;border-left:0;border-top:0}
+.vf u{position:absolute;left:30px;right:30px;height:2px;background:linear-gradient(90deg,transparent,#b8f5c8,transparent);box-shadow:0 0 14px #b8f5c8;animation:sc 2.6s ease-in-out infinite}
+@keyframes sc{0%,100%{top:34px}50%{top:calc(100% - 36px)}}
+.ready{background:var(--pri2);color:var(--pri);border-radius:14px;padding:11px 14px;font-weight:500;font-size:14px;margin-bottom:14px}
+.gh{display:flex;gap:14px;align-items:center;margin:4px 0 8px}.gh>span{font-size:40px;width:64px;height:64px;border-radius:20px;background:var(--pri2);display:grid;place-items:center}
+.gh h3{font:700 20px var(--serif);margin:0}.gh small{color:var(--mut)}
+.gr{padding:12px 0;border-top:1px solid var(--line)}.gr b{display:block;font:700 15px var(--serif)}.gr p{margin:2px 0 0}
+.cal{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:8px}.cal i{font-style:normal;text-align:center;font-size:12px;padding:8px 0;border-radius:10px;background:var(--bg);color:var(--mut)}
+.cal i.y{background:var(--pri);color:#fff;font-weight:700}.cal i.n{outline:2px solid var(--acc);outline-offset:1px}
+:root:not([data-theme="light"]) .cal i.y{color:#0e1812}
+.verdict{display:inline-block;font-weight:700;padding:7px 16px;border-radius:99px;margin-bottom:10px;color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent)}
+.ok{--c:var(--ok)}.wn{--c:var(--wn)}.no{--c:var(--no)}
+.gauge{text-align:center;position:relative;margin:6px 0}.gauge svg{width:200px;max-width:100%}.gauge b{position:absolute;left:0;right:0;bottom:4px;font:500 42px/1 var(--serif)}
+.chk{display:flex;gap:12px;padding:11px 12px;border-radius:16px;margin-bottom:8px;background:color-mix(in srgb,var(--c) 9%,transparent)}
+.chk>i{flex:none;width:26px;height:26px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;font:700 13px var(--sans);font-style:normal}
+.chk b{display:block;font-size:14px}.chk span{font-size:13px;color:var(--mut)}
+.hr{display:flex;align-items:center;gap:10px;justify-content:space-between;padding:14px 0;border-top:1px solid var(--line)}.hr b{font:700 16px var(--serif);display:block}.hr small{color:var(--mut)}.hr .btn{width:auto;padding:10px 16px;margin:0;font-size:14px}
+.thumb{width:100%;max-height:150px;object-fit:cover;border-radius:16px;margin-top:10px}
+.tab{position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);max-width:616px;margin:0 auto;height:70px;background:var(--card);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--line);border-radius:30px;box-shadow:0 16px 36px -14px rgba(31,66,48,.5);display:grid;grid-template-columns:1fr 1fr 92px 1fr 1fr;z-index:30}
+.tab>button{background:none;border:0;color:var(--mut);font:500 11px var(--sans);display:grid;justify-items:center;align-content:center;gap:3px;cursor:pointer;position:relative}
+.tab>button.on{color:var(--pri);font-weight:700}.tab>button.on:before{content:"";position:absolute;top:7px;width:28px;height:4px;border-radius:4px;background:var(--pri)}
+.mid{position:relative}
+.sc{position:absolute;left:50%;top:-30px;transform:translateX(-50%);width:70px;height:70px;border-radius:50%;border:6px solid var(--bg);background:var(--hero);color:#fff;display:grid;place-items:center;cursor:pointer;box-shadow:0 14px 26px -6px rgba(47,93,63,.7);transition:.2s;padding:0}
+.sc .ic{width:28px;height:28px}.sc.on{box-shadow:0 0 0 5px color-mix(in srgb,var(--pri) 25%,transparent),0 14px 26px -6px rgba(47,93,63,.7)}
+.mid small{position:absolute;bottom:9px;left:0;right:0;text-align:center;font:700 11px var(--sans);color:var(--pri)}
+.ov{display:none;position:fixed;inset:0;z-index:50}.ov.on{display:block}
+#cam{background:#101512}#cam video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.rb{width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.92);color:#1d2b21;font-size:22px;display:grid;place-items:center;cursor:pointer}
+.ctop{position:absolute;top:calc(env(safe-area-inset-top,0px) + 14px);left:14px;z-index:3}
+.frame{position:absolute;left:11%;right:11%;top:18%;aspect-ratio:1;z-index:2}
+.frame b{position:absolute;width:64px;height:64px;border:5px solid #fff;border-radius:26px;filter:drop-shadow(0 0 6px rgba(0,0,0,.35))}
+.frame b:nth-child(1){top:0;left:0;border-right:0;border-bottom:0}.frame b:nth-child(2){top:0;right:0;border-left:0;border-bottom:0}.frame b:nth-child(3){bottom:0;left:0;border-right:0;border-top:0}.frame b:nth-child(4){bottom:0;right:0;border-left:0;border-top:0}
+#hint{position:absolute;left:0;right:0;bottom:170px;text-align:center;color:#fff;font-weight:500;text-shadow:0 1px 8px #000;z-index:3;padding:0 24px}
+.cbar{position:absolute;left:0;right:0;bottom:0;background:#fff;display:flex;justify-content:space-around;align-items:center;padding:20px 20px calc(env(safe-area-inset-bottom,0px) + 20px);z-index:3}
+.cbar .rb{background:#e6efdd;color:#2f5d3f;font-size:19px}
+#shut{width:72px;height:72px;border-radius:50%;background:#3f9d5a;border:5px solid #fff;box-shadow:0 0 0 3px #3f9d5a;cursor:pointer}
+#tipbox{position:absolute;left:18px;right:18px;bottom:150px;background:#fff;color:#1d2b21;border-radius:18px;padding:14px 18px;z-index:4;font-size:14px}
+#ana{background:var(--bg);text-align:center;padding-top:env(safe-area-inset-top,0px)}
+#ana .rb{position:absolute;top:calc(env(safe-area-inset-top,0px) + 14px);left:14px;background:var(--card);box-shadow:var(--sh)}
+.circ{width:min(72vw,290px);aspect-ratio:1;border-radius:50%;overflow:hidden;position:relative;border:10px solid var(--line);margin:17vh auto 22px;background:var(--pri2);display:grid;place-items:center}
+.circ img{width:100%;height:100%;object-fit:cover;display:block}.circ.sm{width:120px;margin:6px auto 12px;border-width:6px;font-size:54px}
+.sweep{position:absolute;left:0;right:0;top:0;height:0;background:rgba(95,175,125,.45);border-bottom:3px solid var(--pri);animation:sw 2.2s ease-in-out infinite}
+@keyframes sw{0%{height:0}50%{height:100%}100%{height:0}}
+#atx{font:700 18px var(--serif);padding:0 24px;margin:0 0 16px;color:var(--ink)}#retry{width:auto;display:inline-flex;padding:13px 26px}
+#res{background:var(--bg);overflow:auto;padding:calc(env(safe-area-inset-top,0px) + 14px) 16px 40px}#res .in{max-width:640px;margin:0 auto}
+.cf{display:flex;align-items:center;gap:10px;margin:10px 0}.cf .bar{flex:1;height:10px;border-radius:9px;background:var(--line);overflow:hidden}.cf .bar i{display:block;height:100%;background:var(--hero)}
+#toast{position:fixed;left:50%;bottom:110px;transform:translate(-50%,20px);background:#1d2b21;color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;opacity:0;transition:.3s;z-index:90;pointer-events:none}#toast.on{opacity:1;transform:translate(-50%,0)}
+.foot{text-align:center;color:var(--mut);font-size:12px;margin:18px 0}
+</style></head><body>
+<svg style="display:none"><symbol id="i-home" viewBox="0 0 24 24"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></symbol><symbol id="i-guide" viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3V4zM9 8h6M9 12h6"/></symbol><symbol id="i-cam" viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4zM12 17a4 4 0 100-8 4 4 0 000 8z"/></symbol><symbol id="i-soil" viewBox="0 0 24 24"><path d="M12 20v-8M12 12c0-4-3-6-7-6 0 4 3 6 7 6zM12 14c0-3 2-5 6-5 0 3-2 5-6 5zM6 21h12"/></symbol><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></symbol><symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol></svg>
+<div class="bg"><i></i><i></i></div>
+<div class="app">
+<header class="hd"><div class="lg">🌱</div><div><b>BinhiScan</b><small>AI-Based Seed Identification and Intelligent Planting Information System</small></div><button class="ib" id="hb" aria-label="History"><svg class="ic"><use href="#i-clock"/></svg></button></header>
+
+<section class="pg on" id="p-home">
+<div class="card"><h2>Welcome to BinhiScan</h2><p>Identify supported seeds, view planting instructions, and keep your scan results in one place.</p>
+<button class="btn" data-go="scan"><svg class="ic"><use href="#i-cam"/></svg>Scan a seed</button><button class="btn g" data-go="guide" style="margin:0">View planting guides</button></div>
+<div class="stats"><div class="card"><b id="ns">0</b><span>Saved scans</span></div><div class="card"><b>8</b><span>Supported seed classes</span></div></div>
+<div class="card"><h2>Supported seeds <small>/ Mga suportadong binhi</small></h2><p>Tap a seed to view its planting guide.</p><div class="chips" id="seeds"></div><p class="note" style="margin:14px 0 0">The model is trained for these eight classes only. Other seeds may be misidentified.</p></div>
+</section>
+
+<section class="pg" id="p-scan">
+<div class="card"><h2>Scan Seed <small>— I-scan ang Binhi</small></h2><p>Choose one method to identify a seed.</p>
+<div class="vf" id="vf"><b></b><b></b><b></b><b></b><u></u><span>🌰</span></div>
+<div class="ready" id="ready">AI model ready. Start camera or choose a photo.</div>
+<div class="two"><button class="btn" id="bcam"><svg class="ic"><use href="#i-cam"/></svg>Scan Camera</button><label class="btn g" style="margin:0">🖼 Upload Photo<input type="file" id="up" accept="image/*" hidden></label></div>
+<p class="note" style="margin:14px 0 0">Camera requires HTTPS and your permission.</p></div>
+</section>
+
+<section class="pg" id="p-guide"><div class="card"><h2>Planting Guide <small>— Gabay sa Pagtatanim</small></h2><p>Choose a seed to view its planting information. These are general estimates; follow local agricultural advice.</p><label class="l">Select seed</label><select id="gs"></select></div><div class="card" id="gout"></div></section>
+
+<section class="pg" id="p-soil">
+<div class="card"><h2>Soil Assessment <small>— Pagsusuri ng Lupa</small></h2><p>Add a soil photo (optional) and answer the checklist. A photo is a visual reference only; it cannot measure pH or nutrients.</p>
+<div class="two"><label class="btn g" style="margin:0">🖼 Upload<input type="file" id="sp1" accept="image/*" hidden></label><label class="btn g" style="margin:0">📷 Take photo<input type="file" id="sp2" accept="image/*" capture="environment" hidden></label></div><div id="sthumb"></div></div>
+<div class="card"><label class="l" style="margin-top:0">1 · Crop / Pananim</label><select id="cs"></select>
+<label class="l">2 · Soil appearance / Uri ng lupa</label><select id="so"><option>Clay</option><option selected>Loam</option><option>Sandy</option></select>
+<label class="l">3 · Moisture now / Basa ng lupa</label><select id="mo"><option>Dry</option><option selected>Moist</option><option>Waterlogged</option></select>
+<label class="l">4 · Sunlight per day / Sikat ng araw</label><select id="sn"><option value="3">Under 4 hours</option><option value="5">4–6 hours</option><option value="7" selected>6+ hours</option></select>
+<label class="l">5 · Current weather / Panahon</label><select id="wx"><option value="Sunny">Maaraw / Sunny</option><option value="Cloudy">Maulap / Cloudy</option><option value="Rainy">Maulan / Rainy</option><option value="Cool">Malamig / Cool</option></select>
+<label class="l">6 · Soil pH from a test (optional) · <b id="phv">6.5</b></label><input type="range" id="ph" min="4.5" max="8.5" step="0.1" value="6.5">
+<button class="btn" id="chk" style="margin-top:16px">Check suitability</button></div>
+<div class="card" id="sout" hidden></div>
+</section>
+
+<section class="pg" id="p-season"><div class="card"><h2>Planting Season Check <small>— Panahon ng Pagtatanim</small></h2><p>Checks the current month against seasonal guidance stored in this app. It does not use live weather forecasts.</p>
+<div class="ready"><small style="display:block;opacity:.8">Today's date on this device</small><b style="font:700 22px var(--serif)" id="dt"></b></div>
+<label class="l">Choose seed</label><select id="ses"></select><button class="btn" id="sbt" style="margin-top:14px">Check season</button>
+<div id="sout2"></div><p class="note" style="margin:6px 0 0">Best time depends on variety, local climate, rainfall, and farm conditions.</p></div></section>
+
+<section class="pg" id="p-history"><div class="card"><h2>Scan History <small>— Kasaysayan</small></h2><p>Scan results are stored on this device only. Clearing browser data may remove them.</p>
+<button class="btn g" id="exp">Export history</button><button class="btn r" id="clr">Clear history</button><div id="hl"></div></div></section>
+<div class="foot">BinhiScan · Student project prototype<br>AI predictions and planting suitability are estimates, not professional agricultural or laboratory advice.</div>
+</div>
+
+<nav class="tab"><button data-go="home"><svg class="ic"><use href="#i-home"/></svg>Home</button><button data-go="guide"><svg class="ic"><use href="#i-guide"/></svg>Guide</button>
+<div class="mid"><button class="sc" data-go="scan" aria-label="Scan Seed"><svg class="ic"><use href="#i-cam"/></svg></button><small>Scan</small></div>
+<button data-go="soil"><svg class="ic"><use href="#i-soil"/></svg>Soil</button><button data-go="season"><svg class="ic"><use href="#i-sun"/></svg>Season</button></nav>
+
+<div id="cam" class="ov"><video id="vid" autoplay playsinline muted></video><div class="ctop"><button class="rb" id="cb">‹</button></div><div class="frame"><b></b><b></b><b></b><b></b></div><div id="hint"></div>
+<div id="tipbox" hidden><b>Tips for a clear scan</b><br>• Good lighting<br>• One seed type, centered<br>• Close and in focus<br>• Plain background</div>
+<div class="cbar"><label class="rb">🖼<input type="file" id="up2" accept="image/*" hidden></label><button id="shut" aria-label="Capture"></button><button class="rb" id="tips">?</button></div><input type="file" id="camin" accept="image/*" capture="environment" hidden></div>
+<div id="ana" class="ov"><button class="rb" id="ab">‹</button><div class="circ"><img id="aimg" alt=""><div class="sweep" id="sw"></div></div><p id="atx">Analyzing…</p><button class="btn" id="retry" hidden>Try again</button></div>
+<div id="res" class="ov"></div><div id="toast"></div>
+
+<script>
+const D=[
+{id:"mais",tl:"Mais",en:"Corn",e:"🌽",dp:"2.5–5 cm",wa:"Water after planting and keep moisture steady, especially during germination and flowering.",su:"Full sun is preferred.",g:"5–10 days",h:[75,100],m:[4,5,6,10,11,12],ph:[5.8,7],t:[21,32],s:[1,2,1],sun:6},
+{id:"kamatis",tl:"Kamatis",en:"Tomato",e:"🍅",dp:"0.5–1 cm (seedbed)",wa:"Water regularly at the base; avoid wetting leaves and keep drainage good.",su:"Full sun (6+ hours).",g:"5–10 days",h:[90,120],m:[10,11,12,1,2],ph:[6,6.8],t:[18,30],s:[0,2,1],sun:6},
+{id:"talong",tl:"Talong",en:"Eggplant",e:"🍆",dp:"0.5–1 cm (seedbed)",wa:"Keep soil evenly moist; mulch to hold moisture.",su:"Full sun (6+ hours).",g:"7–14 days",h:[90,120],m:[10,11,12,1,2,3],ph:[5.8,6.8],t:[24,32],s:[1,2,1],sun:6},
+{id:"kangkong",tl:"Kangkong",en:"Water Spinach",e:"🌿",dp:"1–2 cm",wa:"Needs plenty of water; keep soil wet or shallowly flooded.",su:"Full sun to partial shade.",g:"3–7 days",h:[25,35],m:[1,2,3,4,5,6,7,8,9,10,11,12],ph:[5.5,7],t:[25,35],s:[2,2,0],sun:4,wet:1},
+{id:"sitaw",tl:"Sitaw",en:"Yardlong Bean",e:"🫘",dp:"2–3 cm",wa:"Moderate watering; avoid waterlogging. Provide a trellis.",su:"Full sun (6+ hours).",g:"4–8 days",h:[55,70],m:[10,11,12,1,2,3],ph:[6,7],t:[22,34],s:[1,2,2],sun:6},
+{id:"labanos",tl:"Labanos",en:"Radish",e:"🌱",dp:"1–1.5 cm",wa:"Keep soil evenly moist for tender roots.",su:"Full sun to partial shade.",g:"3–7 days",h:[25,40],m:[10,11,12,1,2],ph:[6,7],t:[15,28],s:[0,2,2],sun:4},
+{id:"okra",tl:"Okra",en:"Okra",e:"🫑",dp:"2–3 cm",wa:"Water when the top soil is dry; tolerates short dry spells.",su:"Full sun (6+ hours).",g:"5–10 days",h:[50,65],m:[3,4,5,6,7,8,9,10],ph:[6,7],t:[24,36],s:[1,2,2],sun:6},
+{id:"pechay",tl:"Pechay",en:"Pak Choi",e:"🥬",dp:"0.5–1 cm",wa:"Keep soil consistently moist, light daily watering.",su:"Full sun to partial shade.",g:"3–5 days",h:[25,35],m:[10,11,12,1,2,3],ph:[6,7],t:[18,30],s:[1,2,1],sun:4}];
+const find=id=>D.find(x=>x.id==id),$=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const MO="Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec".split(" "),NOW=new Date().getMonth()+1,CL=["Clay","Loam","Sandy"];
+const WX={Sunny:33,Cloudy:29,Rainy:26,Cool:20};
+let hist=[];try{hist=JSON.parse(localStorage.getItem("bs_h")||"[]")}catch(e){}
+const saveH=()=>{try{localStorage.setItem("bs_h",JSON.stringify(hist))}catch(e){}};
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("on");setTimeout(()=>e.classList.remove("on"),2200)}
+const opts=D.map(s=>`<option value="${s.id}">${s.tl} (${s.en})</option>`).join("");
+["#gs","#cs","#ses"].forEach(i=>$(i).innerHTML=opts);
+$("#dt").textContent=new Date().toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});
+$("#seeds").innerHTML=D.map(s=>`<button class="chip" data-s="${s.id}">${s.e} ${s.tl}</button>`).join("");
+const cal=s=>MO.map((m,i)=>`<i class="${s.m.includes(i+1)?"y":""} ${i+1==NOW?"n":""}">${m}</i>`).join("");
+const row=(a,b)=>`<div class="gr"><b>${a}</b><p>${b}</p></div>`;
+function guide(s){return `<div class="gh"><span>${s.e}</span><div><h3>${s.tl} / ${s.en}</h3><small>Harvest in ${s.h[0]}–${s.h[1]} days</small></div></div>`+row("Planting depth / Lalim ng pagtatanim","about "+s.dp)+row("Watering / Pagdidilig",s.wa)+row("Sunlight / Sikat ng araw",s.su)+row("Estimated germination / Tinatayang pagtubo","about "+s.g)+row("Soil & pH / Lupa",CL.filter((_,i)=>s.s[i]==2).join(" / ")+" · pH "+s.ph[0]+"–"+s.ph[1])+`<div class="gr"><b>Best months / Pinakamainam na buwan</b><div class="cal">${cal(s)}</div></div>`}
+function go(p,id){$$(".pg").forEach(x=>x.classList.toggle("on",x.id=="p-"+p));$$(".tab [data-go]").forEach(b=>b.classList.toggle("on",b.dataset.go==p));
+if(id){["#gs","#cs","#ses"].forEach(i=>$(i).value=id)}
+if(p=="home")$("#ns").textContent=hist.length;if(p=="guide")$("#gout").innerHTML=guide(find($("#gs").value));if(p=="history")renderH();
+$("#sout").hidden=true;$("#sout2").innerHTML="";scrollTo(0,0)}
+$$("[data-go]").forEach(b=>b.onclick=()=>{ov(null);go(b.dataset.go)});
+$("#hb").onclick=()=>go("history");$("#gs").onchange=()=>$("#gout").innerHTML=guide(find($("#gs").value));
+$$("[data-s]").forEach(b=>b.onclick=()=>go("guide",b.dataset.s));
+$("#ph").oninput=e=>$("#phv").textContent=e.target.value;
+$("#sbt").onclick=()=>{const s=find($("#ses").value),ok=s.m.includes(NOW),nx=[...s.m,...s.m.map(x=>x+12)].find(x=>x>NOW);
+$("#sout2").innerHTML=`<div style="margin-top:16px"><span class="verdict ${ok?"ok":"wn"}">${ok?"Good time to plant":"Not the best month"}</span><p>${ok?MO[NOW-1]+" is within the recommended planting months for "+s.tl+".":MO[NOW-1]+" is outside the recommended months for "+s.tl+". Next good month: "+MO[(nx-1)%12]+"."}</p><div class="cal">${cal(s)}</div></div>`};
+$("#chk").onclick=()=>{const s=find($("#cs").value),sv=s.s[CL.indexOf($("#so").value)],ph=+$("#ph").value,mo=$("#mo").value,sn=+$("#sn").value,t=WX[$("#wx").value],inS=s.m.includes(NOW);let r=[],p=0;
+const A=(l,a,b,n)=>{r.push([l,a,b]);p+=n};
+sv==2?A("ok","Soil type","Ideal for "+s.tl+".",25):sv==1?A("wn","Soil type","Acceptable; mix in compost.",15):A("no","Soil type","Not ideal. Improve with compost or use raised beds.",4);
+ph>=s.ph[0]&&ph<=s.ph[1]?A("ok","Soil pH",ph+" is within "+s.ph[0]+"–"+s.ph[1]+".",20):A("wn","Soil pH",ph+" is "+(ph<s.ph[0]?"acidic; add agricultural lime":"alkaline; add compost")+". Ideal "+s.ph[0]+"–"+s.ph[1]+".",9);
+t>=s.t[0]&&t<=s.t[1]?A("ok","Temperature","About "+t+"°C is suitable ("+s.t[0]+"–"+s.t[1]+"°C).",20):A("no","Temperature","About "+t+"°C; ideal is "+s.t[0]+"–"+s.t[1]+"°C.",5);
+mo=="Waterlogged"?(s.wet?A("ok","Moisture","Wet soil suits "+s.tl+".",15):A("no","Moisture","Waterlogged soil risks rot. Improve drainage.",2)):mo=="Dry"?(s.wet?A("no","Moisture","Too dry; "+s.tl+" needs wet soil.",3):A("wn","Moisture","Dry soil; irrigate before and after sowing.",9)):A("ok","Moisture","Soil moisture is good.",15);
+sn>=s.sun?A("ok","Sunlight","Enough sun for "+s.tl+".",10):sn>=s.sun-2?A("wn","Sunlight","Slightly low; "+s.tl+" prefers "+s.sun+"+ hours.",6):A("no","Sunlight","Too shady for "+s.tl+".",2);
+inS?A("ok","Season",MO[NOW-1]+" is within the planting months.",10):A("wn","Season",MO[NOW-1]+" is outside the best months.",3);
+const v=p>=75?["ok","Suitable to plant"]:p>=50?["wn","Possible with care"]:["no","Not recommended"],I={ok:"✓",wn:"!",no:"✕"};
+const o=$("#sout");o.hidden=false;o.innerHTML=`<h2>Result <small>— ${s.tl}</small></h2><div class="gauge ${v[0]}"><svg viewBox="0 0 160 90"><path d="M10 80A70 70 0 0 1 150 80" fill="none" stroke="var(--line)" stroke-width="12" stroke-linecap="round"/><path d="M10 80A70 70 0 0 1 150 80" fill="none" stroke="var(--c)" stroke-width="12" stroke-linecap="round" stroke-dasharray="${p/100*220} 220"/></svg><b>${p}</b></div><div style="text-align:center"><span class="verdict ${v[0]}">${v[1]}</span></div>`+r.map(c=>`<div class="chk ${c[0]}"><i>${I[c[0]]}</i><div><b>${c[1]}</b><span>${c[2]}</span></div></div>`).join("")+`<p class="note">Estimate only. Confirm with a real soil test and local agricultural advice.</p>`;o.scrollIntoView({behavior:"smooth"})};
+function renderH(){$("#hl").innerHTML=hist.length?hist.map((h,i)=>{const s=find(h.id);return `<div class="hr"><div><b>${s.e} ${s.tl} (${s.en})</b><small>${h.ts} · ${h.c.toFixed(1)}%</small></div><button class="btn g" data-h="${h.id}">View guide</button></div>`}).join(""):`<p class="note" style="margin-top:14px">No scans yet.</p>`;$$("[data-h]").forEach(b=>b.onclick=()=>go("guide",b.dataset.h))}
+$("#clr").onclick=()=>{hist=[];saveH();renderH();toast("History cleared")};
+$("#exp").onclick=async()=>{const t=hist.map(h=>`${h.ts} - ${find(h.id).tl} (${find(h.id).en}) - ${h.c}%`).join("\n")||"No scans";try{await navigator.clipboard.writeText(t);toast("History copied")}catch(e){toast("Copy not available here")}};
+// ---- Scan ----
+let stream=null;const ov=n=>["cam","ana","res"].forEach(x=>$("#"+x).classList.toggle("on",x==n));
+const stopCam=()=>{if(stream)stream.getTracks().forEach(t=>t.stop());stream=null};
+async function openCam(){ov("cam");$("#tipbox").hidden=true;$("#hint").textContent="Place the seed inside the frame";
+try{stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:"environment"}},audio:false});$("#vid").srcObject=stream}catch(e){stream=null;$("#hint").textContent="Camera unavailable here. Tap the green button to use your phone camera."}}
+$("#bcam").onclick=openCam;$("#vf").onclick=openCam;$("#retry").onclick=openCam;$("#cb").onclick=()=>{stopCam();ov(null)};$("#ab").onclick=()=>ov(null);
+$("#tips").onclick=()=>$("#tipbox").hidden=!$("#tipbox").hidden;
+$("#shut").onclick=()=>{if(!stream){$("#camin").click();return}const v=$("#vid"),c=document.createElement("canvas");c.width=v.videoWidth;c.height=v.videoHeight;c.getContext("2d").drawImage(v,0,0);c.toBlob(b=>{stopCam();scan(b)},"image/jpeg",.9)};
+["up","up2","camin"].forEach(id=>$("#"+id).onchange=e=>{stopCam();scan(e.target.files[0]);e.target.value=""});
+async function shrink(f){const b=await createImageBitmap(f),k=Math.min(1,900/Math.max(b.width,b.height)),c=document.createElement("canvas");c.width=Math.round(b.width*k);c.height=Math.round(b.height*k);c.getContext("2d").drawImage(b,0,0,c.width,c.height);return new Promise(r=>c.toBlob(r,"image/jpeg",.85))}
+const ask=async(P,f)=>{const sm=await(window.claude&&claude.use("sample"));if(!sm)throw{code:"none"};return sm.json(P,{images:[await shrink(f)],cache:false})};
+/* Conservative seed identification: reject unclear or unsupported images instead of forcing a class. */
+const MIN_SEED_CONFIDENCE = 78;
+const identify = async f => {
+  const allowed = D.map(s => s.id).join(", ");
+  const prompt = `You are a cautious seed-image screener for a student project. Examine the actual visible seed(s), not the filename or assumed context. Supported classes only: ${allowed}.
+
+First decide whether the image clearly shows one or more actual seeds. If it shows a plant, leaf, pod, fruit, packet, soil, unrelated object, a seed not among the supported classes, a blurry image, or seeds too small/obscured to distinguish, return id:null. Do not force the closest class. If uncertain between two classes, return id:null.
+
+Class guidance: mais/corn is typically a comparatively large angular or rounded kernel; kamatis/tomato seeds are small, pale, flat/oval seeds; talong/eggplant seeds are small, flat, pale yellowish seeds; kangkong/water-spinach seeds are generally dark and hard; sitaw/yardlong-bean seeds are bean-like, usually oblong/ellipsoid with a visible hilum and often tan/brown/black coloration; labanos/radish seeds are rounded, usually reddish-brown; okra seeds are round, hard, and relatively large; pechay seeds are very small, round, and dark. These are visual clues, not guarantees. Color alone is not enough.
+
+Important: do NOT label an image as Sitaw just because it looks brown, oval, or bean-like. Select Sitaw only when the visible seed morphology clearly supports it. If the photo is not reliable, ask for a closer, well-lit photo on a plain background.
+
+Reply with valid JSON only: {"id":"one supported id" or null,"c":number from 0 to 100,"reason":"short reason; required when id is null"}. Confidence must reflect visual certainty. Use null rather than guessing.`;
+  const r = await ask(prompt, f);
+  if (!r || typeof r !== "object") {
+    return { id: null, c: 0, reason: "The image could not be interpreted reliably. Please try another photo." };
+  }
+  if (!r.id || !find(r.id)) {
+    return { id: null, c: Number(r.c) || 0, reason: r.reason || "No supported seed could be identified clearly. Please take a closer, well-lit photo of the seed." };
+  }
+  const confidence = Number(r.c);
+  if (!Number.isFinite(confidence) || confidence < MIN_SEED_CONFIDENCE) {
+    return { id: null, c: Number.isFinite(confidence) ? confidence : 0, reason: "The seed is not clear enough to identify confidently. Please try a closer photo with a plain background and good lighting." };
+  }
+  return { id: r.id, c: Math.max(0, Math.min(100, confidence)), reason: "" };
+};
+async function scan(file){if(!file)return;const url=URL.createObjectURL(file);$("#aimg").src=url;$("#sw").style.display="";$("#retry").hidden=true;$("#atx").textContent="Analyzing…";ov("ana");
+const fail=t=>{$("#sw").style.display="none";$("#atx").innerHTML=t;$("#retry").hidden=false};
+try{const r=await identify(file);if(!r||!find(r.id)){fail((r&&r.reason||"No supported seed detected.")+"<br><small style='font:400 13px var(--sans);color:var(--mut)'>Try a closer, brighter shot of one seed type.</small>");return}
+const c=Math.max(0,Math.min(100,+r.c||0));hist.unshift({id:r.id,c,ts:new Date().toLocaleString()});hist=hist.slice(0,30);saveH();openRes(r.id,c,url)}
+catch(e){fail(e.code=="not_granted"?"Permission is needed to analyze the photo.":e.code=="none"?"Scanner not available here.":"Scan failed. Please try again.")}}
+function openRes(id,c,img){const s=find(id),R=$("#res");R.innerHTML=`<div class="in"><button class="btn g" id="rbk" style="width:auto;padding:11px 18px;margin-bottom:12px">‹ Back</button><div class="card" style="text-align:center"><div class="circ sm"><img src="${img}" alt=""></div><h2 style="font-size:28px">${s.tl}</h2><p style="margin:0">${s.en}</p><div class="cf"><span style="font-weight:700">${Math.round(c)}%</span><div class="bar"><i style="width:${c}%"></i></div><small class="note">confidence</small></div></div><div class="card">${guide(s)}</div><button class="btn" id="rsoil">Check soil suitability</button><button class="btn g" id="rdone">Done</button></div>`;
+ov("res");R.scrollTop=0;$("#rbk").onclick=()=>ov(null);$("#rdone").onclick=()=>{ov(null);go("home")};$("#rsoil").onclick=()=>{ov(null);go("soil",id)}}
+async function soilPhoto(f){if(!f)return;$("#sthumb").innerHTML=`<img class="thumb" src="${URL.createObjectURL(f)}" alt=""><p class="note" style="margin:8px 0 0" id="snote">Reading photo…</p>`;
+try{const r=await ask(`Look at this soil photo. Reply JSON only: {"soil":"Clay"|"Loam"|"Sandy","moisture":"Dry"|"Moist"|"Waterlogged"}`,f);if(CL.includes(r.soil))$("#so").value=r.soil;if(["Dry","Moist","Waterlogged"].includes(r.moisture))$("#mo").value=r.moisture;$("#snote").textContent="Visual estimate applied: "+r.soil+", "+r.moisture+". Please adjust if wrong."}catch(e){$("#snote").textContent="Photo saved as a visual reference. Select soil details below."}}
+$("#sp1").onchange=e=>soilPhoto(e.target.files[0]);$("#sp2").onchange=e=>soilPhoto(e.target.files[0]);
+go("home");
+</script></body></html>
